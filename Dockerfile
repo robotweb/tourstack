@@ -1,30 +1,23 @@
 # --- Base image ---
 FROM node:20-alpine AS base
+RUN mkdir -p /app
 WORKDIR /app
-ENV NODE_ENV=production
-
-# --- Dependencies ---
-FROM base AS deps
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-
-# --- Build image ---
-FROM deps AS build
-COPY . .
-RUN yarn build
 
 # --- Development image ---
-FROM deps AS dev
+FROM base AS dev
+COPY package.json yarn.lock ./
+RUN yarn install
 ENV NODE_ENV=development
 COPY . .
 EXPOSE 3000
-CMD ["yarn", "dev"]
+CMD ["yarn","dev"]
 
 # --- Production image ---
 FROM base AS prod
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=build /app/.output ./.output
-COPY package.json ./
+COPY . .
+RUN yarn install
+ENV NODE_ENV=production
+RUN yarn build
 EXPOSE 3000
 USER node
 CMD ["node", ".output/server/index.mjs"]

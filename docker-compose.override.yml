@@ -12,3 +12,4 @@ services:
       - .env
     volumes:
       - ./:/app # Only used in dev, ignored in prod (no effect if prod image is used)
+      - /app/node_modules  # This creates an anonymous volume that prevents overwriting

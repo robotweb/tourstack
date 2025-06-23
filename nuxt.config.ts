@@ -17,9 +17,6 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-    define: {
-      API_URL: JSON.stringify(process.env.API_URL || 'https://example.com'),
-    },
     server: {
       watch: {
         usePolling: true
@@ -43,6 +40,5 @@ export default defineNuxtConfig({
       NEXT_PUBLIC_STACK_PROJECT_ID: process.env.NEXT_PUBLIC_STACK_PROJECT_ID,
       NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
     },
-    STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
   }
 })

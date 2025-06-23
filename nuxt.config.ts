@@ -44,8 +44,5 @@ export default defineNuxtConfig({
       NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: process.env.NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY,
     },
     STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
-  },
-  nitro: {
-    preset: 'netlify'
   }
 })

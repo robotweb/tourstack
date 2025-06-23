@@ -74,4 +74,4 @@ bun run preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
-// Auth is handled via Stack Auth (https://docs.stack-auth.com/next/rest-api/overview)
+Auth is handled via Stack Auth (https://docs.stack-auth.com/next/rest-api/overview)

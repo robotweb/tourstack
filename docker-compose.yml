@@ -5,12 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: ${DOCKER_TARGET:-prod}   # Use 'prod' by default, 'dev' for development
+      target: prod
     ports:
       - "3000:3000"
     env_file:
       - .env
-    volumes:
-      - ./:/app  # Only used in dev, ignored in prod (no effect if prod image is used)
-    command: ${DOCKER_COMMAND:-}  # Optional: override command if needed
-    

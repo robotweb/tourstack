@@ -1,6 +1,4 @@
 import fetch from 'node-fetch';
-import { useRuntimeConfig } from '#imports';
-
 class AuthStackService {
   getConfig() {
     return {
@@ -19,7 +17,7 @@ class AuthStackService {
       STACK_PUBLISHABLE_CLIENT_KEY,
       STACK_SECRET_SERVER_KEY
     } = this.getConfig();
-    const url = `${STACK_API_URL}/api/v1/${endpoint}`;
+    const url = `${STACK_API_URL}/api/v1${endpoint}`;
     // Optionally: console.log('AuthStack URL:', STACK_API_URL, 'Endpoint:', endpoint, 'Full URL:', url);
     const headers = {
       'Content-Type': 'application/json',
@@ -35,7 +33,9 @@ class AuthStackService {
     };
     if (body) {
       options.body = JSON.stringify(body);
+      headers['Content-Length'] = Buffer.byteLength(options.body).toString();
     }
+    
     try {
       const response = await fetch(url, options);
       if (!response.ok) {

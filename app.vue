@@ -5,7 +5,7 @@
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <Toaster richColors/>
+    <Toaster richColors position="top-center"/>
   </div>
 </template>
 <script setup lang="ts">

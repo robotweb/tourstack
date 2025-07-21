@@ -7,6 +7,17 @@ export default defineEventHandler(async (event) => {
       setResponseStatus(event, 400);
       return { error: 'Customer data is required' };
     }
+    const teamUid = customerData.teamUid
+
+    const team = await knex('team')
+      .where('uid',teamUid)
+      .first()
+
+      console.log(team)
+
+    const teamId = team.id
+    customerData.team_id = teamId;
+    delete customerData.teamUid;
     const [newCustomer] = await knex('customer')
       .insert(customerData)
       .returning('*');

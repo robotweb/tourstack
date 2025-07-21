@@ -19,6 +19,8 @@ class AuthStackService {
     } = this.getConfig();
     const url = `${STACK_API_URL}/api/v1${endpoint}`;
     // Optionally: console.log('AuthStack URL:', STACK_API_URL, 'Endpoint:', endpoint, 'Full URL:', url);
+
+    console.log(url)
     const headers = {
       'Content-Type': 'application/json',
       'X-Stack-Access-Type': 'client',
@@ -66,6 +68,7 @@ class AuthStackService {
       return data;
     } catch (error) {
       // Optionally: console.log('Fetch Error:', error);
+      console.log(error)
       throw error;
     }
   }

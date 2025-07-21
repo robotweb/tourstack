@@ -3,9 +3,10 @@
         <MyCombobox
             v-model="selectedServiceGroup"
             :items="serviceGroups"
-            placeholder="Select Service Group"
-        />  
+            placeholder="Service Type"
+        />
         <Input placeholder="Name" v-model="name"/>
+        <Textarea v-model="description" placeholder="Description"></Textarea>
         <Button @click="save()">Save</Button>
     </div>
 </template>
@@ -16,6 +17,7 @@ export default{
             serviceGroups: [],
             selectedServiceGroup: null,
             name: null,
+            description: null,
             price: null
         }
     }

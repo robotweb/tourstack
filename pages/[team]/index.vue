@@ -6,12 +6,32 @@
         {{ booking }}
       </div>
     </div>
-    <Dialog>
-      <DialogTrigger>
-        <Button>
-          Edit Profile
+    <div class="navigation">
+        <Button @click="isBookingDialogOpen = true">
+          Start booking
         </Button>
-      </DialogTrigger>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button>Menu</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent class="mx-2 min-w-50">
+            <DropdownMenuItem>Dashboard</DropdownMenuItem>
+            <DropdownMenuItem @click="navigateTo(clientUid+'/bookings')">Bookings</DropdownMenuItem>
+            <DropdownMenuItem>Customers</DropdownMenuItem>
+            <DropdownMenuItem>Drivers</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem :as-child="true"><Logout>Logout</Logout></DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+    </div>
+    <!-- booking dialogue-->
+    <Dialog v-model:open="isBookingDialogOpen">
       <DialogContent>
         <DialogHeader>
           <!-- <DialogTitle>Edit profile</DialogTitle>
@@ -20,7 +40,7 @@
           </DialogDescription> -->
         </DialogHeader>
         <div 
-          class="max-h-[60vh] overflow-y-auto scrollbar-hide" 
+          class="max-h-[80vh] overflow-y-auto scrollbar-hide" 
           style="padding: 8px;"
           :class="{ 'overflow-hidden': $store.isAnyPopoverOpen }"
         >
@@ -28,6 +48,12 @@
         </div>
       </DialogContent>
     </Dialog>
+  </div>
+  <div class="section">
+    <div class="section-header">
+      <h2 class="text-lg font-bold">Recent Bookings</h2>
+      <Button @click="navigateTo(clientUid+'/bookings')">View all bookings</Button>
+    </div>
   </div>
 </template>
 
@@ -40,7 +66,8 @@ export default {
   data() {
     return {
       loading: false,
-      bookings: []
+      bookings: [],
+      isBookingDialogOpen: false
     }
   },
   methods: {
@@ -63,6 +90,12 @@ export default {
   },
   mounted() {
     //this.getBookings()
+  },
+  computed:{
+    clientUid(){
+      const team = this.$route.params.team
+      return team
+    }
   }
 }
 </script>
@@ -71,4 +104,19 @@ export default {
 .overflow-hidden{
   overflow-y: hidden !important;
 }
+
+.navigation{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.section-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
 </style>

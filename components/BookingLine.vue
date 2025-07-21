@@ -93,7 +93,7 @@
         <Input placeholder="" v-model="dropOff"/>
     </div>
     <div class="flex flex-col gap-2">
-        <Label>Notation</Label>
+        <Label>Service Notation</Label>
         <Textarea v-model="notation"/>
     </div>
 </div>

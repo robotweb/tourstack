@@ -1,9 +1,9 @@
 <template>
-<div class="flex flex-col gap-2">
+<div class="flex flex-col gap-2" style="margin-bottom: 40px;">
     <div class="flex flex-col gap-2 col-grid">
         <div>
             <div style="display: flex; justify-content: space-between; gap: 10px; align-items: center;">
-                <Label>Client</Label>
+                <Label>Customer</Label>
                 <Popover v-model:open="customerPopover">
                     <PopoverTrigger style="height: 1.2em;" class="cursor-pointer">
                         <Icon  name="lucide:user-plus" />
@@ -20,7 +20,7 @@
             />
         </div>
         <div>
-            <Label style="height: 1.2em;">Customer</Label>
+            <Label style="height: 1.2em;">Passenger</Label>
             <MyCombobox
                 v-model="selectedCustomer"
                 :items="customers"
@@ -45,14 +45,21 @@
         <Button @click="addBookingLine">Add service</Button>
         <Button v-if="bookingDetailLines.length > 1" @click="removeBookingLine">Remove service</Button>
     </div>
-    <DialogFooter style="justify-content: space-between;">
+    <div class="flex flex-col gap-2">
+        <Label>Booking Notation</Label>
+        <Textarea></Textarea>
+    </div>
+    <div>
+
+    </div>
+    <div class="booking-footer">
         <MySelect
           v-model="selectedStatus"
           :options="statuses"
           placeholder="Select status"
         />
         <Button @click="save">Save</Button>
-    </DialogFooter>
+    </div>
 </div>
 </template>
 
@@ -143,7 +150,6 @@ export default{
             };
 
             console.log('Booking Information:', bookingInfo);
-            console.log('Booking Information (JSON):', JSON.stringify(bookingInfo, null, 2));
         }
     },
     computed:{
@@ -161,5 +167,16 @@ export default{
 }
 .small{
     height: 1rem;
+}
+.booking-footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 20px;
+    background: white;
+    width: 100%;
 }
 </style>

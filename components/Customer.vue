@@ -1,6 +1,23 @@
 <template>
     <div style="display: flex; flex-direction: column; gap: 10px;">
-        <Input placeholder="Name" v-model="name"/>
+        <Input placeholder="Customer" v-model="name"/>
+        <div class="flex gap-2">
+            <Input placeholder="First name" v-model="firstname"/>
+            <Input placeholder="Last name" v-model="lastname"/>
+        </div>
+        <div class="flex gap-2">
+            <Input placeholder="Phone" v-model="phone"/>
+            <Input placeholder="Email" v-model="email"/>
+        </div>
+        <Input placeholder="Street address" v-model="address1"/>
+        <div class="flex gap-2">
+            <Input placeholder="City" v-model="address1"/>
+            <Input placeholder="Province" v-model="address2"/>
+        </div>
+        <div class="flex gap-2">
+            <Input placeholder="Country" v-model="address3"/>
+            <Input placeholder="Code" v-model="address4"/>
+        </div>
         <Button @click="save">Save</Button>
     </div>
 </template>
@@ -8,7 +25,7 @@
 export default{
     data(){
         return {
-            name: null,
+            customer: null,
             selectedCustomer: null,
             customerPopover: false,
             bookingDetailLines: [{}],
@@ -24,7 +41,7 @@ export default{
                     method: "POST",
                     body: {
                         name: this.name,
-                        team_id: 1
+                        teamUid: this.$route.params.team
                     }
                 })
                 console.log(response)

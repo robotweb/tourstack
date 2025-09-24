@@ -1,27 +1,26 @@
-# --- Base image ---
-FROM node:20-bookworm-slim AS base
-RUN mkdir -p /app
+# Install dependencies only when needed
+FROM node:20-alpine AS deps
 WORKDIR /app
-
-# --- Builder ---
-FROM base AS builder
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install
+
+# Build the app
+FROM node:20-alpine AS builder
+WORKDIR /app
 COPY . .
-ENV NODE_ENV=production
-# Force JS fallback for lightningcss during build to avoid native binary issues
-ENV LIGHTNINGCSS_FORCE_JS=1
+COPY --from=deps /app/node_modules ./node_modules
 RUN npm run build
 
-# --- Production runtime ---
-FROM base AS runner
-ENV NODE_ENV=production
+# Production image, copy built assets and run
+FROM node:20-alpine AS runner
 WORKDIR /app
-# Install only production deps (skip scripts to avoid running nuxt prepare)
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev --ignore-scripts
-# Copy built output from builder
-COPY --from=builder /app/.output ./.output
+ENV NODE_ENV=production
+
+# Copy only the necessary files
+COPY --from=builder /app/.output .output
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
 EXPOSE 3000
-USER node
+
 CMD ["node", ".output/server/index.mjs"]

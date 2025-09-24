@@ -17,16 +17,28 @@ class AuthStackService {
       STACK_PUBLISHABLE_CLIENT_KEY,
       STACK_SECRET_SERVER_KEY
     } = this.getConfig();
+    if (!STACK_API_URL || !STACK_PROJECT_ID || !STACK_PUBLISHABLE_CLIENT_KEY) {
+      const missing = [
+        !STACK_API_URL && 'STACK_API_URL',
+        !STACK_PROJECT_ID && 'STACK_PROJECT_ID',
+        !STACK_PUBLISHABLE_CLIENT_KEY && 'STACK_PUBLISHABLE_CLIENT_KEY'
+      ].filter(Boolean).join(', ');
+      const error = new Error(`AuthStack config missing: ${missing}`);
+      error.statusCode = 500;
+      throw error;
+    }
     const url = `${STACK_API_URL}/api/v1${endpoint}`;
     // Optionally: console.log('AuthStack URL:', STACK_API_URL, 'Endpoint:', endpoint, 'Full URL:', url);
 
     console.log(url)
     const headers = {
       'Content-Type': 'application/json',
+      'User-Agent': 'tourstack-server/1.0',
       'X-Stack-Access-Type': 'client',
       'X-Stack-Project-Id': STACK_PROJECT_ID,
       'X-Stack-Publishable-Client-Key': STACK_PUBLISHABLE_CLIENT_KEY,
-      'X-Stack-Secret-Server-Key': STACK_SECRET_SERVER_KEY,
+      // Do NOT send secret by default for client requests. Allow override via moreHeaders when needed server-side.
+      // 'X-Stack-Secret-Server-Key': STACK_SECRET_SERVER_KEY,
       ...moreHeaders
     };
     const options = {
@@ -35,11 +47,14 @@ class AuthStackService {
     };
     if (body) {
       options.body = JSON.stringify(body);
-      headers['Content-Length'] = Buffer.byteLength(options.body).toString();
+      // Let fetch set Content-Length automatically
     }
     
     try {
-      const response = await fetch(url, options);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 15000);
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      clearTimeout(timeout);
       if (!response.ok) {
         // Try to get response body for more details
         const errorText = await response.text();

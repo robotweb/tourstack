@@ -6,30 +6,6 @@
         {{ booking }}
       </div>
     </div>
-    <div class="navigation">
-        <Button @click="isBookingDialogOpen = true">
-          Start booking
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button>Menu</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent class="mx-2 min-w-50">
-            <DropdownMenuItem>Dashboard</DropdownMenuItem>
-            <DropdownMenuItem @click="navigateTo(clientUid+'/bookings')">Bookings</DropdownMenuItem>
-            <DropdownMenuItem>Customers</DropdownMenuItem>
-            <DropdownMenuItem>Drivers</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem :as-child="true"><Logout>Logout</Logout></DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-    </div>
     <!-- booking dialogue-->
     <Dialog v-model:open="isBookingDialogOpen">
       <DialogContent>
@@ -50,10 +26,6 @@
     </Dialog>
   </div>
   <div class="section">
-    <div class="section-header">
-      <h2 class="text-lg font-bold">Recent Bookings</h2>
-      <Button @click="navigateTo(clientUid+'/bookings')">View all bookings</Button>
-    </div>
   </div>
 </template>
 

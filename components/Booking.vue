@@ -52,7 +52,7 @@
     <div>
 
     </div>
-    <div class="booking-footer">
+    <div class="flex justify-end gap-2">
         <MySelect
           v-model="selectedStatus"
           :options="statuses"
@@ -81,8 +81,9 @@ export default{
             customers: [],
             statuses: [
                 { value: 'pending', label: 'Pending' },
+                { value: 'cancelled', label: 'Cancelled' },
                 { value: 'confirmed', label: 'Confirmed' },
-                { value: 'cancelled', label: 'Cancelled' }
+                { value: 'completed', label: 'Completed' },
             ]
         }
     },
@@ -168,15 +169,5 @@ export default{
 .small{
     height: 1rem;
 }
-.booking-footer{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 20px;
-    background: white;
-    width: 100%;
-}
+
 </style>

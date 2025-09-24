@@ -1,5 +1,5 @@
 # --- Base image ---
-FROM node:20-alpine AS base
+FROM node:20-bookworm-slim AS base
 RUN mkdir -p /app
 WORKDIR /app
 
@@ -9,6 +9,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ENV NODE_ENV=production
+# Force JS fallback for lightningcss during build to avoid native binary issues
+ENV LIGHTNINGCSS_FORCE_JS=1
 RUN npm run build
 
 # --- Production runtime ---

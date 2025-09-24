@@ -2,11 +2,9 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: prod
+    image: ${DOCKER_IMAGE}:latest
     ports:
       - "3000:3000"
     env_file:
       - .env
+    restart: unless-stopped

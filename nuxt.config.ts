@@ -1,6 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import tailwindcss from '@tailwindcss/vite'
-
 export default defineNuxtConfig({
   ssr: true,
   compatibilityDate: '2025-05-15',
@@ -13,14 +11,10 @@ export default defineNuxtConfig({
     }]
   ],
   css: ['~/assets/css/tailwind.css'],
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
-    server: {
-      watch: {
-        usePolling: true
-      }
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
     }
   },
   shadcn: {

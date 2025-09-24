@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxt/icon', 
+    '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     ['@pinia/nuxt', {
       autoImports: ['defineStore', 'storeToRefs']

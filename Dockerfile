@@ -16,9 +16,10 @@ RUN npm run build
 # --- Production runtime ---
 FROM base AS runner
 ENV NODE_ENV=production
-# Install only production deps
+WORKDIR /app
+# Install only production deps (skip scripts to avoid running nuxt prepare)
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 # Copy built output from builder
 COPY --from=builder /app/.output ./.output
 EXPOSE 3000

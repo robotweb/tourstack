@@ -3,21 +3,22 @@ FROM node:20-alpine AS base
 RUN mkdir -p /app
 WORKDIR /app
 
-# --- Development image ---
-FROM base AS dev
-COPY package.json yarn.lock ./
-RUN yarn install
-ENV NODE_ENV=development
+# --- Builder ---
+FROM base AS builder
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
-EXPOSE 3000
-CMD ["yarn","dev"]
-
-# --- Production image ---
-FROM base AS prod
-COPY . .
-RUN yarn install
 ENV NODE_ENV=production
-RUN yarn build
+RUN npm run build
+
+# --- Production runtime ---
+FROM base AS runner
+ENV NODE_ENV=production
+# Install only production deps
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
+# Copy built output from builder
+COPY --from=builder /app/.output ./.output
 EXPOSE 3000
 USER node
 CMD ["node", ".output/server/index.mjs"]

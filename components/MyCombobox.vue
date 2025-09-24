@@ -20,7 +20,7 @@
             >
                 {{ item.label }}
                 <ComboboxItemIndicator>
-                    <Check class="ml-auto h-4 w-4" />
+                    <Icons name="check" class="ml-auto h-4 w-4" />
                 </ComboboxItemIndicator>
             </ComboboxItem>
         </ComboboxGroup>
@@ -29,8 +29,6 @@
 </template>
 
 <script lang="ts">
-import { Check } from 'lucide-vue-next'
-
 interface Item {
     label: string
     value: string | number

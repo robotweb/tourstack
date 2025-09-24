@@ -1,25 +1,23 @@
-# Use Node 18 which has better compatibility with native modules
-FROM node:18-bookworm-slim AS deps
+# Install dependencies only when needed
+FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+RUN npm install
 
-# Build stage
-FROM node:18-bookworm-slim AS builder
+# Build the app
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-# Set environment to avoid native binding issues
-ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm run build
 
-# Runtime stage
-FROM node:18-bookworm-slim AS runner
+# Production image, copy built assets and run
+FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev --ignore-scripts
-COPY --from=builder /app/.output ./.output
+# Copy only the necessary files
+COPY --from=builder /app/.output .output
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 EXPOSE 3000
-USER node
 CMD ["node", ".output/server/index.mjs"]

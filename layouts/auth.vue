@@ -121,8 +121,8 @@ export default {
       const base = '/' + this.clientUid
       return [
         { label: 'Bookings', to: base + '', icon: 'calendar' },
-        { label: 'Services', to: base + '/service', icon: 'settings' },
-        { label: 'Vehicles', to: base + '/vehicle', icon: 'truck' },
+        { label: 'Services', to: base + '/service', icon: 'hand-platter' },
+        { label: 'Vehicles', to: base + '/vehicle', icon: 'car-taxi-front' },
         { label: 'Packages', to: base + '/package', icon: 'package' },
         { label: 'Customers', to: base + '/customer', icon: 'users' },
       ]

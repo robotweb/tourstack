@@ -4,7 +4,7 @@
         role="button"
         tabindex="0"
         @keydown.enter.space="logout()"
-        class="cursor-pointer focus:outline focus:outline-2 focus:outline-blue-500"
+        class="cursor-pointer"
     >
         <slot></slot>
     </div>

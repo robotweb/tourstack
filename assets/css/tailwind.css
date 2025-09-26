@@ -53,22 +53,7 @@
   }
 }
 
-/* Keep default borders, only remove dark active ring on inputs */
-@layer components {
-  input,
-  textarea,
-  select {
-    @apply focus:outline-none focus:ring-0 focus:ring-offset-0;
-  }
-  input:focus,
-  textarea:focus,
-  select:focus {
-    box-shadow: none !important; /* disables Tailwind ring shadows */
-  }
-}
-
-*{
-  /* Hide scrollbar for Chrome, Safari and Opera */
+/* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -78,14 +63,13 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
-}
 
 /* Custom styles for vue-sonner toast types */
 .toaster .toaster-toast[data-type="success"] {
-  background: #22c55e !important; /* Tailwind green-500 */
-  color: white !important;
+  background: #22c55e; /* Tailwind green-500 */
+  color: white;
 }
 .toaster .toaster-toast[data-type="error"] {
-  background: #ef4444 !important; /* Tailwind red-500 */
-  color: white !important;
+  background: #ef4444; /* Tailwind red-500 */
+  color: white;
 }

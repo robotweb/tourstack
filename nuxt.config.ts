@@ -1,23 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
-  compatibilityDate: '2025-05-15',
+  compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  imports: {
+    autoImport: true,
+  },
   modules: [
-    '@nuxt/icon', 
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
-    ['@pinia/nuxt', {
-      autoImports: ['defineStore', 'storeToRefs']
-    }]
+    '@nuxt/icon',
+    'nuxt-lucide-icons',
+    '@pinia/nuxt'
   ],
-  css: ['~/assets/css/tailwind.css'],
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    }
-  },
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -30,13 +24,6 @@ export default defineNuxtConfig({
     componentDir: './components/ui'
   },
   runtimeConfig: {
-    // Server-side env vars (private)
-    DB_HOST: process.env.DB_HOST,
-    DB_USER: process.env.DB_USER,
-    DB_PASS: process.env.DB_PASS,
-    DB_NAME: process.env.DB_NAME,
-    DB_PORT: process.env.DB_PORT,
-    DB_SSL: process.env.DB_SSL,
     // AuthStack server key (private)
     STACK_SECRET_SERVER_KEY: process.env.STACK_SECRET_SERVER_KEY,
     public: {

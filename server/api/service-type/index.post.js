@@ -1,4 +1,4 @@
-import { knex } from '~/server/db/knex';
+import { prisma } from '~/server/db/prisma';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,19 +9,17 @@ export default defineEventHandler(async (event) => {
     }
     const teamUid = serviceTypeData.teamUid
 
-    const team = await knex('team')
-      .where('uid',teamUid)
-      .first()
+    const team = await prisma.team.findFirst({
+      where: { id: parseInt(teamUid) }
+    });
 
-    const user = await this.$authFetch('/api/auth/me');
-    console.log(user)
-    const teamId = team.id
-    serviceTypeData.team_id = teamId;
-    serviceTypeData.created_by = 
+    console.log(team);
+    const teamId = team.id;
+    serviceTypeData.teamId = teamId;
     delete serviceTypeData.teamUid;
-    const [newServiceType] = await knex('service-type')
-      .insert(serviceTypeData)
-      .returning('*');
+    const newServiceType = await prisma.serviceType.create({
+      data: serviceTypeData
+    });
     setResponseStatus(event, 201);
     return newServiceType;
   } catch (error) {

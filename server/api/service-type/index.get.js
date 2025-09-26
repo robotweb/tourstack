@@ -1,4 +1,4 @@
-import { knex } from '~/server/db/knex';
+import { prisma } from '~/server/db/prisma';
 
 export default defineEventHandler(async (event) => {
     try {
@@ -8,11 +8,14 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 400);
         return { error: 'Team UID is required' };
       }
-      const customers = await knex('service_type')
-        .join('team', 'customer.team_id', 'team.id')
-        .where('team.uid', teamUid)
-        .select('service_type.*');
-      return customers;
+      const serviceTypes = await prisma.serviceType.findMany({
+        where: {
+          team: {
+            id: parseInt(teamUid)
+          }
+        }
+      });
+      return serviceTypes;
     } catch (error) {
       setResponseStatus(event, 500);
       return { error: 'Failed to fetch customers', details: error.message };

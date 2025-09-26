@@ -1,5 +1,5 @@
 import authStack from '~/server/service/authStack';
-import { knex } from '~/server/db/knex';
+import { prisma } from '~/server/db/prisma';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -23,9 +23,10 @@ export default defineEventHandler(async (event) => {
     if (authStackUser && authStackUser.user_id) {
       const newUser = {
         authid: authStackUser.user_id,
-        name: name
+        email: email,
+        firstname: name
       };
-      await knex('user').insert(newUser);
+      await prisma.user.create({ data: newUser });
     }
     // Return the full response from AuthStack to the client
     return authStackUser;

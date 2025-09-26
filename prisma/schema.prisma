@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  authid    String   @unique
+  email     String   @unique
+  firstname String?
+  lastname  String?
+  created   DateTime @default(now())
+  updated   DateTime @updatedAt
+
+  // Relations
+  teamUsers TeamUser[]
+  teams     Team[]    @relation("TeamMembers")
+
+  @@map("user")
+}
+
+model Team {
+  id          Int      @id @default(autoincrement())
+  uid         String   @unique @default(uuid())
+  name        String
+  description String?
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+
+  // Relations
+  teamUsers TeamUser[]
+  members   User[]     @relation("TeamMembers")
+  customers Customer[]
+  serviceTypes ServiceType[]
+  services  Service[]
+  bookings  Booking[]
+
+  @@map("team")
+}
+
+model TeamUser {
+  id     Int @id @default(autoincrement())
+  userId Int
+  teamId Int
+  role   String @default("member")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+  @@map("team_user")
+}
+
+model Customer {
+  id          Int      @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  email       String?
+  phone       String?
+  address     String?
+  city        String?
+  state       String?
+  zip         String?
+  country     String?
+  notes       String?
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+  teamId      Int
+
+  // Relations
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  bookings Booking[]
+
+  @@map("customer")
+}
+
+model ServiceType {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+  teamId      Int
+
+  // Relations
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  services Service[]
+
+  @@map("service_type")
+}
+
+model Service {
+  id            Int      @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Decimal? @db.Decimal(10, 2)
+  duration      Int?     // Duration in minutes
+  created       DateTime @default(now())
+  updated       DateTime @updatedAt
+  teamId        Int
+  serviceTypeId Int?
+
+  // Relations
+  team        Team        @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  serviceType ServiceType? @relation(fields: [serviceTypeId], references: [id], onDelete: SetNull)
+  bookings    Booking[]
+
+  @@map("service")
+}
+
+model Booking {
+  id          Int      @id @default(autoincrement())
+  date        DateTime? @db.Date
+  time        DateTime? @db.Time
+  status      String    @default("pending")
+  notes       String?
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+  teamId      Int
+  customerId  Int
+  serviceId   Int
+
+  // Relations
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  service  Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@map("booking")
+}

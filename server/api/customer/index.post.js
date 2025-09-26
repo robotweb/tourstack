@@ -1,4 +1,4 @@
-import { knex } from '~/server/db/knex';
+import { prisma } from '~/server/db/prisma';
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,18 +9,18 @@ export default defineEventHandler(async (event) => {
     }
     const teamUid = customerData.teamUid
 
-    const team = await knex('team')
-      .where('uid',teamUid)
-      .first()
+    const team = await prisma.team.findFirst({
+      where: { id: parseInt(teamUid) }
+    });
 
-      console.log(team)
+    console.log(team);
 
-    const teamId = team.id
-    customerData.team_id = teamId;
+    const teamId = team.id;
+    customerData.teamId = teamId;
     delete customerData.teamUid;
-    const [newCustomer] = await knex('customer')
-      .insert(customerData)
-      .returning('*');
+    const newCustomer = await prisma.customer.create({
+      data: customerData
+    });
     setResponseStatus(event, 201);
     return newCustomer;
   } catch (error) {

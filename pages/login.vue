@@ -14,10 +14,11 @@
         </Card>
     </div>
 </template>
-<script>
+<script setup>
 definePageMeta({
-  middleware: 'noauth'
 })
+</script>
+<script>
 export default{
     data(){
         return{
@@ -25,48 +26,37 @@ export default{
             password: null
         }
     },
-    mounted(){
-
+    computed: {
+        authStore() {
+            return useAuthStore()
+        }
+    },
+    watch: {
+        'authStore.isLoggedIn'(isLoggedIn) {
+            if (isLoggedIn) {
+                navigateTo('/')
+            }
+        }
     },
     methods:{
         async login(){
-            if(!this.email || !this.password){
+            if (!this.email || !this.password) {
+                this.$toast.error("Email and password are required")
                 return
             }
-            const body = {
-                email: this.email,
-                password: this.password
-            }
-            try{
-                const response = await this.$authFetch("/api/auth/login",{
-                    method: "POST",
-                    body: body
-                })
-
-                // console.log('Login response:', response)
-                // console.log('Response type:', typeof response)
-                // console.log('Response keys:', Object.keys(response))
-                // console.log('Response access_token:', response.access_token)
-                // console.log('Response refresh_token:', response.refresh_token)
-                // console.log('Response has access_token:', 'access_token' in response)
-                // console.log('Response has refresh_token:', 'refresh_token' in response)
-
-                // Use the setStoredTokens function from auth-fetch plugin
-                this.$setStoredTokens(response)
-                
-                // Handle successful login
-                this.$toast.success("Login successful!")
-                // Redirect to dashboard or home
+            
+            const result = await this.authStore.login(this.email, this.password)
+            console.log('Login result:', result)
+            
+            if (result.success) { 
                 navigateTo("/")
-            }catch(e){                
-                console.log(e.data)
-                this.$toast.error(e.data.statusText, {
-                    description: e.data.error.error
-                })
+                this.$toast.success("Login successful!")
+            } else {
+                this.$toast.error("Login failed", result.error)
             }
         },
         navigateToSignup() {
-            return navigateTo('/signup')
+            return navigateTo('/sign-up')
         },
         navigateToForgotPassword(){
             return navigateTo('/forgot-password')

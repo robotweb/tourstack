@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     });
     setResponseStatus(event, 201);
     return newService;
-  } catch (error) {
+  } catch (error: any) {
     setResponseStatus(event, 500);
     return { error: 'Failed to create service', details: error.message };
   }

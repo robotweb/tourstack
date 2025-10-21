@@ -1,14 +1,11 @@
 <template>
-  <div>
-    <!-- <NuxtRouteAnnouncer />
-    <NuxtWelcome /> -->
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <Toaster richColors position="top-center"/>
-  </div>
+  <Toaster position="top-center" />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
-<script setup lang="ts">
-import { Toaster } from '@/components/ui/sonner'
-import 'vue-sonner/style.css' // vue-sonner v2 requires this import
+
+<script setup>
+import { Toaster } from 'vue-sonner'
+import 'vue-sonner/style.css'
 </script>

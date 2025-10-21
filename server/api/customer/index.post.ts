@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     });
     setResponseStatus(event, 201);
     return newCustomer;
-  } catch (error) {
+  } catch (error: any) {
     setResponseStatus(event, 500);
     return { error: 'Failed to create customer', details: error.message };
   }

@@ -14,10 +14,11 @@
         </Card>
     </div>
 </template>
-<script>
+<script setup>
 definePageMeta({
-  middleware: 'noauth'
 })
+</script>
+<script>
 export default{
     data(){
         return{
@@ -26,37 +27,33 @@ export default{
             password: null
         }
     },
-    mounted(){
-
+    computed: {
+        authStore() {
+            return useAuthStore()
+        }
+    },
+    watch: {
+        'authStore.isLoggedIn'(isLoggedIn) {
+            if (isLoggedIn) {
+                navigateTo('/')
+            }
+        }
     },
     methods:{
         async signup(){
-            const body = {
-                email: this.email,
-                password: this.password,
-                name: this.name
+            if (!this.email || !this.password) {
+                this.$toast.error("Email and password are required")
+                return
             }
-            try{
-                const response = await this.$authFetch("/api/auth/signup",{
-                    method: "POST",
-                    body: body
-                })
-                console.log('Signup response:', response)
-                
-                // Use the setStoredTokens function from auth-fetch plugin
-                this.$setStoredTokens(response)
-                
-                console.log('Cookies set successfully')
-                
-                // Handle successful signup
-                this.$toast.success("Success")
-                console.log('Toast shown, redirecting...')
-                
-                // Redirect to login or dashboard
-                navigateTo("/login")
-            }catch(e){                
-                console.log('Signup error:', e)
-                this.$toast.error("Request error")
+            
+            const result = await this.authStore.signup(this.email, this.password, this.name)
+            console.log('Signup result:', result)
+            
+            if (result.success) { 
+                navigateTo("/")
+                this.$toast.success("Signup successful!")
+            } else {
+                this.$toast.error("Signup failed", result.error)
             }
         },
         navigateToLogin(){

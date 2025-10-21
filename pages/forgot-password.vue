@@ -25,7 +25,6 @@
 </template>
 <script>
 definePageMeta({
-  middleware: 'noauth'
 })
 export default{
     data(){

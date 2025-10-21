@@ -3,11 +3,11 @@ import authStack from '~/server/service/authStack';
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
-    const response = await authStack.post('/auth/password/reset', body);
+    const response = await authStack.post('/auth/password/send-reset-code', body);
     // Optionally log for debugging:
     console.log('AuthStack send-reset-code response:', response);
     return response;
-  } catch (error) {
+  } catch (error: any) {
     // Optionally log for debugging:
     console.log('SendResetCode Error:', error);
     setResponseStatus(event, error.statusCode || 500);

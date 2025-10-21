@@ -9,7 +9,7 @@
   --card-foreground: 0 0% 3.9%;
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 3.9%;
-  --primary: 0 0% 9%;
+  --primary: 0 0% 0%;
   --primary-foreground: 0 0% 98%;
   --secondary: 0 0% 96.1%;
   --secondary-foreground: 0 0% 9%;
@@ -19,6 +19,7 @@
   --accent-foreground: 0 0% 9%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
+  --success: 141.1 71.4% 48.2%;
   --border: 0 0% 89.8%;
   --input: 0 0% 89.8%;
   --ring: 0 0% 3.9%;
@@ -42,6 +43,7 @@
   --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
+  --success: 141.1 71.4% 48.2%;
   --border: 0 0% 14.9%;
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
@@ -64,12 +66,21 @@
   scrollbar-width: none;  /* Firefox */
 }
 
-/* Custom styles for vue-sonner toast types */
-.toaster .toaster-toast[data-type="success"] {
-  background: #22c55e; /* Tailwind green-500 */
-  color: white;
+/* Sonner error toast override */
+[data-sonner-toast][data-type="error"] {
+  background-color: hsl(var(--destructive) / var(--tw-bg-opacity, 1)) !important;
+  color: #fff !important;
 }
-.toaster .toaster-toast[data-type="error"] {
-  background: #ef4444; /* Tailwind red-500 */
-  color: white;
+[data-sonner-toast][data-type="error"] * {
+  color: #fff !important;
+}
+
+
+/* Sonner success toast override */
+[data-sonner-toast][data-type="success"] {
+  background-color: hsl(var(--success) / var(--tw-bg-opacity, 1)) !important;
+  color: #fff !important;
+}
+[data-sonner-toast][data-type="success"] * {
+  color: #fff !important;
 }

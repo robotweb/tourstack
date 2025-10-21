@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event);
     const teamUid = query.team;
-    if (!teamUid) {
+    if (!teamUid || typeof teamUid !== 'string') {
       setResponseStatus(event, 400);
       return { error: 'Team UID is required' };
     }
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       }
     });
     return customers;
-  } catch (error) {
+  } catch (error: any) {
     setResponseStatus(event, 500);
     return { error: 'Failed to fetch customers', details: error.message };
   }

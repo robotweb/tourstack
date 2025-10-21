@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
             lastname: authUser.lastname || null
           }
         });
-      } catch (authError) {
+      } catch (authError: any) {
         setResponseStatus(event, 401);
         return { error: 'Failed to validate user with auth service', details: authError.message };
       }
@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
       return [newTeam];
     }
     return teams;
-  } catch (error) {
+  } catch (error: any) {
     setResponseStatus(event, 500);
     return { error: 'Failed to fetch teams', details: error.message };
   }
